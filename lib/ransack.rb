@@ -8,11 +8,15 @@ module Ransack
   extend Configuration
   class UntraversableAssociationError < StandardError; end;
 
-  SUPPORTS_ATTRIBUTE_ALIAS =
-  begin
-    ActiveRecord::Base.respond_to?(:attribute_aliases)
-  rescue NameError
-    false
+  if defined?(::Mongoid)
+    SUPPORTS_ATTRIBUTE_ALIAS = false
+  else
+    SUPPORTS_ATTRIBUTE_ALIAS = 
+    begin
+      ActiveRecord::Base.respond_to?(:attribute_aliases)
+    rescue NameError
+      false
+    end
   end
 end
 
